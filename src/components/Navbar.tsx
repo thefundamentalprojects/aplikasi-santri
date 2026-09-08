@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Menu, X, Download, ShieldCheck, UserCheck, Bell } from 'lucide-react';
+import { BookOpen, Menu, X, Download, ShieldCheck, UserCheck, LogOut } from 'lucide-react';
 import { db } from '@/lib/db';
+import { auth } from '@/lib/auth';
 import { PesantrenConfig } from '@/lib/types';
 
 interface NavbarProps {
@@ -11,10 +12,19 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const [config, setConfig] = useState<PesantrenConfig | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setConfig(db.getConfig());
+    setIsLoggedIn(auth.isLoggedIn());
   }, []);
+
+  const handleLogout = () => {
+    if (confirm("Apakah Anda yakin ingin Logout dari Sesi Admin Operator?")) {
+      auth.logout();
+      window.location.reload();
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-6 py-3 flex items-center justify-between">
@@ -34,9 +44,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           </div>
           <div>
             <h1 className="font-bold text-slate-100 text-base leading-tight tracking-tight flex items-center gap-2">
-              {config?.namaPondok || "SANTRI HUB"}
+              {config?.namaPondok || "Pondok Pesantren Al-Azhar"}
               <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full">
-                Vercel Ready
+                Al-Azhar Official
               </span>
             </h1>
             <p className="text-xs text-slate-400 font-medium">Sistem Informasi Manajemen Santri</p>
@@ -61,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `backup_santrihub_${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `backup_alazhar_${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
           }}
@@ -74,11 +84,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
 
         <div className="h-6 w-[1px] bg-slate-800 mx-1 hidden sm:block"></div>
 
-        <div className="flex items-center gap-2 pl-1">
-          <div className="w-8 h-8 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-center">
-            ADM
+        {isLoggedIn ? (
+          <button
+            onClick={handleLogout}
+            title="Logout Admin Operator"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 text-rose-300 rounded-lg text-xs font-bold transition"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-slate-400 font-bold text-xs flex items-center justify-center">
+            GUEST
           </div>
-        </div>
+        )}
       </div>
     </header>
   );

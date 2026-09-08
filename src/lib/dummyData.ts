@@ -1,12 +1,12 @@
 import { Santri, SuratIzin, AbsensiRecord, HafalanRecord, PelanggaranRecord, KeuanganRecord, PesantrenConfig } from './types';
 
 export const INITIAL_PESANTREN_CONFIG: PesantrenConfig = {
-  namaPondok: "Pondok Pesantren Nurul Huda",
+  namaPondok: "Pondok Pesantren Al-Azhar",
   subJudul: "Lembaga Pendidikan Al-Qur'an & Kitab Kuning",
   pengasuh: "KH. Ahmad Dahlan, M.Ag",
-  alamat: "Jl. Pesantren No. 45, Komplek Krapyak, Kabupaten Sleman, D.I. Yogyakarta",
+  alamat: "Jl. Pesantren No. 45, Kabupaten Sleman, D.I. Yogyakarta",
   telepon: "0812-3456-7890",
-  email: "info@nurulhuda.ponpes.id",
+  email: "info@alazhar.ponpes.id",
 };
 
 export const INITIAL_SANTRI: Santri[] = [

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
+import { AuthGuard } from '@/components/AuthGuard';
 import '@/styles/globals.css';
 
 export default function RootLayout({
@@ -15,8 +16,8 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        <title>SANTRI HUB - Aplikasi Manajemen Data Santri & Pondok Pesantren</title>
-        <meta name="description" content="Sistem Informasi Pondok Pesantren - Input Data Santri, Cetak Surat Izin, Absensi, Progress Hafalan, dan Status Alumni." />
+        <title>Pondok Pesantren Al-Azhar - Sistem Informasi Santri Hub</title>
+        <meta name="description" content="Sistem Informasi Pondok Pesantren Al-Azhar - Input Data Santri, Cetak Surat Izin, Absensi, Progress Hafalan, dan Status Alumni." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#059669" />
@@ -30,10 +31,12 @@ export default function RootLayout({
           {/* Left Sidebar */}
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-          {/* Right Page View */}
+          {/* Right Page View guarded by Admin Login */}
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-950/90">
             <div className="max-w-7xl mx-auto space-y-6">
-              {children}
+              <AuthGuard>
+                {children}
+              </AuthGuard>
             </div>
           </main>
         </div>
